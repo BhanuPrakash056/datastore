@@ -42,7 +42,6 @@ func commHandler(w http.ResponseWriter, r *http.Request) {
 	words := strings.Fields(con)
 	if words[0] == "SET" {
 		setMethod(words, w, r)
-		return
 	} else if words[0] == "GET" {
 		getMethod(words, w, r)
 	} else if words[0] == "QPUSH" {
