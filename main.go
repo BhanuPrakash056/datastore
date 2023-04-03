@@ -31,7 +31,7 @@ type Queue struct {
 var stores []Store
 var queue []Queue
 
-func createUserHandler(w http.ResponseWriter, r *http.Request) {
+func commHandler(w http.ResponseWriter, r *http.Request) {
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -60,7 +60,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	// r := mux.NewRouter()
 	// r.HandleFunc("/comm", getCommand).Methods("POST")
-	http.HandleFunc("/user", createUserHandler)
+	http.HandleFunc("/comm", commHandler)
 	log.Fatal(http.ListenAndServe(":8100", nil))
 }
 
@@ -162,7 +162,6 @@ func push(words []string, w http.ResponseWriter, r *http.Request) {
 	temp.Key = words[1]
 	temp.Value = words[2]
 	queue = append(queue, temp)
-	fmt.Println(queue)
 }
 func pop(words []string, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -178,6 +177,8 @@ func pop(words []string, w http.ResponseWriter, r *http.Request) {
 	}
 	element := queue[0]
 	queue = queue[1:]
-	fmt.Println(element)
-	fmt.Println(queue)
+	res := Value{Value: element.Value}
+	json.NewEncoder(w).Encode(res)
+	return
+
 }
